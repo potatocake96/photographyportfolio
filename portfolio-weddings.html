@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Weddings Portfolio | Candidly Yours – by Simon</title>
+    <meta name="description" content="Full wedding photography portfolio by Candidly Yours – by Simon. Candid, film-like wedding photography capturing authentic moments across Melbourne.">
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="top-nav-left">
+            <div class="nav-meta">
+                <span class="nav-dot"></span>
+                <span class="nav-text">2025 - Portfolio</span>
+            </div>
+            <div class="nav-brand-vertical">
+                <span class="vertical-text">CANDIDLY YOURS</span>
+            </div>
+        </div>
+        <div class="top-nav-center">
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="index.html#portfolio" class="nav-link">PORTFOLIO</a>
+            <a href="index.html#about" class="nav-link">ABOUT</a>
+            <a href="index.html#contact" class="nav-link">CONTACT</a>
+        </div>
+        <div class="top-nav-right">
+            <a href="mailto:simon.dass.1996@gmail.com" class="nav-email">simon.dass.1996@gmail.com</a>
+        </div>
+    </nav>
+
+    <!-- Portfolio Header -->
+    <section class="portfolio-header-full">
+        <div class="portfolio-header-content">
+            <a href="index.html#portfolio" class="back-link">← Back to Portfolio</a>
+            <h1 class="portfolio-page-title">WEDDINGS</h1>
+            <p class="portfolio-page-subtitle">Candid, film-like wedding photography capturing authentic moments</p>
+        </div>
+    </section>
+
+    <!-- Full Portfolio Grid -->
+    <section class="portfolio-full">
+        <div class="portfolio-grid-full" id="portfolioGridFull">
+            <!-- Images will be dynamically loaded here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>CANDIDLY YOURS – BY SIMON</h3>
+                <p>Unposed, Unfiltered, Unbelievably You</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">HOME</a>
+                <a href="index.html#portfolio" class="footer-link">PORTFOLIO</a>
+                <a href="index.html#contact" class="footer-link">CONTACT</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> CANDIDLY YOURS – BY SIMON. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+        <button class="lightbox-prev" aria-label="Previous image">&#8249;</button>
+        <button class="lightbox-next" aria-label="Next image">&#8250;</button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImage">
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/portfolio-page.js"></script>
+</body>
+</html>
+

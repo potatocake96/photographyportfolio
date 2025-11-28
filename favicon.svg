@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#f5f1eb" stroke="#c41e3a" stroke-width="2"/>
+  
+  <!-- Initials S.D. -->
+  <text x="50" y="65" font-family="Playfair Display, serif" font-size="42" font-weight="900" 
+        fill="#c41e3a" text-anchor="middle" letter-spacing="-2">SD</text>
+  
+  <!-- Accent dot -->
+  <circle cx="50" cy="25" r="3" fill="#c41e3a"/>
+</svg>
+
