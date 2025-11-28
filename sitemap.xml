@@ -10,8 +10,16 @@
         <priority>1.0</priority>
         <image:image>
             <image:loc>https://simondass.site/assets/img/portrait.jpg</image:loc>
-            <image:title>Simon Dass - Melbourne Event Photographer</image:title>
+            <image:title>Film Wedding Photography Melbourne - Wedding Photographer Melbourne</image:title>
         </image:image>
+    </url>
+    
+    <!-- Wedding Portfolio Page -->
+    <url>
+        <loc>https://simondass.site/portfolio-weddings.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
     </url>
     
     <!-- Portfolio Section -->
