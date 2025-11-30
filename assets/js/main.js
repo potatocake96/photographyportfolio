@@ -305,6 +305,11 @@ function initAnimatedText() {
 function initCircularText() {
     const circularText = document.getElementById('circularText');
     if (circularText) {
+        // Set transform origin to center for proper rotation
+        gsap.set(circularText, {
+            transformOrigin: '50% 50%'
+        });
+        
         gsap.to(circularText, {
             rotation: 360,
             duration: 20,
@@ -823,44 +828,63 @@ function initGSAP() {
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
     
-    // Hero section parallax
-    const heroLayer = document.querySelector('.hero-image-layer');
-    if (heroLayer) {
-        const speed = parseFloat(heroLayer.dataset.speed) || CONFIG.parallaxSpeed.hero;
-        
-        gsap.to(heroLayer, {
-            y: `${50 * speed}%`,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: CONFIG.scrollTrigger.scrub,
-                markers: CONFIG.scrollTrigger.markers
-            }
-        });
+    // Check if mobile device
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Disable scrub on mobile to prevent scroll interference
+    const scrubValue = isMobile ? false : CONFIG.scrollTrigger.scrub;
+    
+    // Hero section parallax - completely disabled on mobile
+    if (!isMobile) {
+        const heroLayer = document.querySelector('.hero-image-layer');
+        if (heroLayer) {
+            const speed = parseFloat(heroLayer.dataset.speed) || CONFIG.parallaxSpeed.hero;
+            
+            gsap.to(heroLayer, {
+                y: `${50 * speed}%`,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: scrubValue,
+                    markers: CONFIG.scrollTrigger.markers,
+                    invalidateOnRefresh: true
+                }
+            });
+        }
     }
     
-    // Hero CTA panel parallax
-    const ctaPanel = document.querySelector('.hero-cta-panel');
-    if (ctaPanel) {
-        gsap.to(ctaPanel, {
-            y: -50,
-            opacity: 0.8,
-            scrollTrigger: {
-                trigger: '.hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 1
-            }
-        });
+    // Hero CTA panel parallax - disable on mobile
+    if (!isMobile) {
+        const ctaPanel = document.querySelector('.hero-cta-panel');
+        if (ctaPanel) {
+            gsap.to(ctaPanel, {
+                y: -50,
+                opacity: 0.8,
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: false
+                }
+            });
+        }
     }
     
         // Portfolio section parallax - images and text interweave (only if items exist)
     function initPortfolioParallax() {
+        const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const scrubValue = isMobile ? false : CONFIG.scrollTrigger.scrub;
+        
         const portfolioItems = document.querySelectorAll('.portfolio-item');
         if (portfolioItems.length > 0) {
             portfolioItems.forEach((item, index) => {
+                // Disable parallax movement on mobile to prevent scroll issues
+                if (isMobile) {
+                    return; // Skip parallax on mobile
+                }
+                
                 // More dynamic parallax for playful layout
                 const speed = 0.15 + (index % 4) * 0.1;
                 const direction = index % 2 === 0 ? 1 : -1;
@@ -876,8 +900,9 @@ function initGSAP() {
                         trigger: '.portfolio',
                         start: 'top bottom',
                         end: 'bottom top',
-                        scrub: CONFIG.scrollTrigger.scrub,
-                        markers: CONFIG.scrollTrigger.markers
+                        scrub: scrubValue,
+                        markers: CONFIG.scrollTrigger.markers,
+                        invalidateOnRefresh: true
                     }
                 });
                 
@@ -944,26 +969,33 @@ function initGSAP() {
                     }
                 });
                 
-                // Subtle parallax movement
-                gsap.to(text, {
-                    y: `${30 * speed * direction}%`,
-                    x: `${12 * speed * (index % 2 === 0 ? 1 : -1)}%`,
-                    rotation: (index % 2 === 0 ? 1 : -1) * speed,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.portfolio',
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: CONFIG.scrollTrigger.scrub,
-                        markers: CONFIG.scrollTrigger.markers
-                    }
-                });
+                // Subtle parallax movement - disabled on mobile to prevent scroll issues
+                const isMobileText = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                if (!isMobileText) {
+                    gsap.to(text, {
+                        y: `${30 * speed * direction}%`,
+                        x: `${12 * speed * (index % 2 === 0 ? 1 : -1)}%`,
+                        rotation: (index % 2 === 0 ? 1 : -1) * speed,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '.portfolio',
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: false,
+                            markers: CONFIG.scrollTrigger.markers,
+                            invalidateOnRefresh: true
+                        }
+                    });
+                }
             });
         }
         
         // Portfolio overlay items (testimonials & details) with parallax
         const overlayItems = document.querySelectorAll('.portfolio-overlay-item');
         if (overlayItems.length > 0) {
+            const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const scrubValue = isMobile ? false : CONFIG.scrollTrigger.scrub;
+            
             overlayItems.forEach((item, index) => {
                 const speed = parseFloat(item.dataset.speed) || 0.4;
                 const type = item.dataset.type;
@@ -1001,59 +1033,79 @@ function initGSAP() {
                     }
                 });
                 
-                // Subtle parallax movement - less chaotic
-                gsap.to(item, {
-                    y: `${40 * speed * direction}%`,
-                    x: `${20 * speed * xDirection}%`,
-                    rotation: `+=${(index % 2 === 0 ? 2 : -2) * speed}deg`,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.portfolio',
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: CONFIG.scrollTrigger.scrub,
-                        markers: CONFIG.scrollTrigger.markers
-                    }
-                });
+                // Subtle parallax movement - disabled on mobile to prevent scroll issues
+                if (!isMobile) {
+                    gsap.to(item, {
+                        y: `${40 * speed * direction}%`,
+                        x: `${20 * speed * xDirection}%`,
+                        rotation: `+=${(index % 2 === 0 ? 2 : -2) * speed}deg`,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '.portfolio',
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: scrubValue,
+                            markers: CONFIG.scrollTrigger.markers,
+                            invalidateOnRefresh: true
+                        }
+                    });
+                }
                 
-                // Make overlay respond to scroll position - pulse effect when in view
-                ScrollTrigger.create({
-                    trigger: item,
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    onEnter: () => {
-                        gsap.to(item, {
-                            opacity: 1,
-                            scale: 1.02,
-                            duration: 0.5,
-                            ease: 'power2.out'
-                        });
-                    },
-                    onLeave: () => {
-                        gsap.to(item, {
-                            opacity: 0.85,
-                            scale: 1,
-                            duration: 0.5,
-                            ease: 'power2.out'
-                        });
-                    },
-                    onEnterBack: () => {
-                        gsap.to(item, {
-                            opacity: 1,
-                            scale: 1.02,
-                            duration: 0.5,
-                            ease: 'power2.out'
-                        });
-                    },
-                    onLeaveBack: () => {
-                        gsap.to(item, {
-                            opacity: 0.85,
-                            scale: 1,
-                            duration: 0.5,
-                            ease: 'power2.out'
-                        });
-                    }
-                });
+                // Make overlay respond to scroll position - simplified on mobile
+                if (isMobile) {
+                    // Simple fade-in on mobile, no scaling or opacity changes
+                    ScrollTrigger.create({
+                        trigger: item,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none',
+                        onEnter: () => {
+                            gsap.to(item, {
+                                opacity: 1,
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        }
+                    });
+                } else {
+                    // Full animation on desktop
+                    ScrollTrigger.create({
+                        trigger: item,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        onEnter: () => {
+                            gsap.to(item, {
+                                opacity: 1,
+                                scale: 1.02,
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        },
+                        onLeave: () => {
+                            gsap.to(item, {
+                                opacity: 0.85,
+                                scale: 1,
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        },
+                        onEnterBack: () => {
+                            gsap.to(item, {
+                                opacity: 1,
+                                scale: 1.02,
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        },
+                        onLeaveBack: () => {
+                            gsap.to(item, {
+                                opacity: 0.85,
+                                scale: 1,
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        }
+                    });
+                }
                 
                 // Subtle hover effect
                 const card = item.querySelector('.overlay-card');
@@ -1082,23 +1134,28 @@ function initGSAP() {
         }
     }
     
-    // Initialize portfolio parallax after images load
-    setTimeout(initPortfolioParallax, 1000);
+    // Initialize portfolio parallax after images load - disabled on mobile to prevent scroll issues
+    if (!isMobile) {
+        setTimeout(initPortfolioParallax, 1000);
+    }
     
-    // About section image parallax
-    const aboutImage = document.querySelector('.about-image-layer');
-    if (aboutImage) {
-        gsap.to(aboutImage, {
-            y: `${30 * CONFIG.parallaxSpeed.about}%`,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.about',
-                start: CONFIG.scrollTrigger.start,
-                end: CONFIG.scrollTrigger.end,
-                scrub: CONFIG.scrollTrigger.scrub,
-                markers: CONFIG.scrollTrigger.markers
-            }
-        });
+    // About section image parallax - completely disabled on mobile
+    if (!isMobile) {
+        const aboutImage = document.querySelector('.about-image-layer');
+        if (aboutImage) {
+            gsap.to(aboutImage, {
+                y: `${30 * CONFIG.parallaxSpeed.about}%`,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.about',
+                    start: CONFIG.scrollTrigger.start,
+                    end: CONFIG.scrollTrigger.end,
+                    scrub: CONFIG.scrollTrigger.scrub,
+                    markers: CONFIG.scrollTrigger.markers,
+                    invalidateOnRefresh: true
+                }
+            });
+        }
     }
     
     // Fade in sections on scroll

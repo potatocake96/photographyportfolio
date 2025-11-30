@@ -571,12 +571,14 @@ button {
     width: 200px;
     height: 200px;
     z-index: 10;
+    transform-origin: center center;
 }
 
 .circular-svg {
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
+    transform-origin: center center;
 }
 
 .circular-text-path {
@@ -585,12 +587,7 @@ button {
     fill: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 2px;
-    animation: rotateText 20s linear infinite;
-}
-
-@keyframes rotateText {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    /* Animation handled by GSAP in JavaScript */
 }
 
 /* ============================================
@@ -1999,6 +1996,20 @@ button {
 }
 
 @media (max-width: 768px) {
+    /* Disable will-change on mobile for better performance */
+    .hero-image-layer,
+    .hero-image,
+    .portfolio-item,
+    .portfolio-overlay-item,
+    .about-image-layer {
+        will-change: auto !important;
+    }
+    
+    /* Ensure hero images are static on mobile (no parallax transforms) */
+    .hero-image-layer {
+        transform: none !important;
+    }
+    
     .hero {
         margin-top: 50px;
         height: calc(100vh - 50px);
@@ -2516,6 +2527,18 @@ button {
    ============================================ */
 .hidden {
     display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 .fade-in {
